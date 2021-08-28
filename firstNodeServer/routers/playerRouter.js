@@ -20,13 +20,19 @@ router.get("/:id", (req, res) => {
 
 //POST
 let next_id = 3;
-router.post("/", (req, res) => {
+router.post("/", (req, res, next) => {
   let new_player = req.body;
-  new_player.id = next_id;
-  next_id++;
-  data.push(new_player);
-
-  res.status(201).json(new_player);
+  console.log(new_player);
+  if (!new_player.name) {
+    next({ statusCode: "404", error: "Name cannot be empty" });
+  } else if (!new_player.goals) {
+    next({ statusCode: "404", error: "Goals cannot be empty" });
+  } else {
+    new_player.id = next_id;
+    next_id++;
+    data.push(new_player);
+    res.status(201).json(new_player);
+  }
 });
 
 //PUT
