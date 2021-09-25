@@ -75,4 +75,28 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//GET ALL
+
+router.get("/", async (req, res) => {
+  const username = req.query.user;
+  const catName = req.query.cat;
+  try {
+    let posts;
+
+    if (username) posts = await Post.find({ username: username });
+    else if (catName)
+      posts = await Post.find({
+        categories: {
+          $in: [catName],
+        },
+      });
+    else posts = await Post.find();
+
+    if (posts.length === 0) res.status(404).json("Could not be found any post");
+    else res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 module.exports = router;
