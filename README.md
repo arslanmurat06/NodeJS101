@@ -1,3 +1,3 @@
 # NodeJS101
 
-Samples to learn making Rest APIs with NodeJS
+Rest API with NodeJs Express with PostgreSQL db.
