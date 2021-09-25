@@ -4,4 +4,4 @@
 - `Nodemon` installed to refresh automatically when code saved
 - `Routers` implemented
 - `Middlewares` implemented to logging and error handling
-- `Postgres` for DB and `knex` to communicator nodejs and postgres
+- `Postgresql` for DB and `knex` to communicator nodejs and postgres
