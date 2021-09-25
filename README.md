@@ -1,3 +1,3 @@
 # NodeJS101
 
-Rest API with NodeJs Express with PostgreSQL db.
+Rest APIs created by using NodeJs Express with various databases.
