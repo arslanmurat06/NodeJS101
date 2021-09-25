@@ -1,7 +1,7 @@
 const router = require("express").Router();
-let data = require("../data.js");
+// let data = require("../data.js");
 const player = require("../data/data-model");
-const dbConfig = require("../data/db-config.js");
+// const dbConfig = require("../data/db-config.js");
 
 //GET ALL
 router.get("/", (req, res) => {
@@ -21,25 +21,26 @@ router.get("/", (req, res) => {
 //GET
 router.get("/:id", (req, res, next) => {
   const { id } = req.params;
-  player
-    .getPlayerByid(id)
-    .then((player) => {
-      if (player) {
-        res.status(200).json(player);
-      } else {
+  player.getPlayerByid(
+    id
+      .then((player) => {
+        if (player) {
+          res.status(200).json(player);
+        } else {
+          next({
+            statusCode: 400,
+            error: "Player could not be found",
+          });
+        }
+      })
+      .catch((error) => {
         next({
-          statusCode: 400,
-          error: "Player could not be found",
+          statusCode: 500,
+          error: "Error happened while fetching player",
+          errorMessage: error,
         });
-      }
-    })
-    .catch((error) => {
-      next({
-        statusCode: 500,
-        error: "Error happened while fetching player",
-        errorMessage: error,
-      });
-    });
+      })
+  );
 });
 
 //POST
