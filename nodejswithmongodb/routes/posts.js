@@ -1,12 +1,10 @@
 const router = require("express").Router();
-
-const User = require("../models/User");
-const bcrypt = require("bcrypt");
 const Post = require("../models/Post");
 
 //CREATE
 
 router.post("/", async (req, res) => {
+  console.log(req);
   const newPost = new Post(req.body);
   try {
     const savedPost = await newPost.save();
@@ -21,21 +19,17 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (post.username === req.body.username) {
-      try {
-        const updatedPost = await Post.findByIdAndUpdate(
-          req.params.id,
-          {
-            $set: req.body,
-          },
-          { new: true }
-        );
-        res.status(200).json(updatedPost);
-      } catch (error) {
-        res.status(500).json(error);
-      }
-    } else {
-      res.status(401).json("You can only update your own posts");
+    try {
+      const updatedPost = await Post.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: req.body,
+        },
+        { new: true }
+      );
+      res.status(200).json(updatedPost);
+    } catch (error) {
+      res.status(500).json(error);
     }
   } catch (error) {
     res.status(500).json(error);
@@ -47,22 +41,19 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (post.username === req.body.username) {
-      try {
-        await post.delete();
-        res.status(200).json("Post has been deleted");
-      } catch (error) {
-        res.status(500).json(error);
-      }
-    } else {
-      res.status(401).json("You can only delete your own posts");
+
+    try {
+      await post.delete();
+      res.status(200).json("Post has been deleted");
+    } catch (error) {
+      res.status(500).json(error);
     }
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-//GET POST
+//GET
 
 router.get("/:id", async (req, res) => {
   try {
@@ -91,6 +82,8 @@ router.get("/", async (req, res) => {
         },
       });
     else posts = await Post.find();
+
+    console.log(posts);
 
     if (posts.length === 0) res.status(404).json("Could not be found any post");
     else res.status(200).json(posts);
